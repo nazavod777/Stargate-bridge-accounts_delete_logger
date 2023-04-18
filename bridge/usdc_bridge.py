@@ -1,7 +1,7 @@
 import json
 import time
 from web3 import Web3
-from web3_checksumm.get_checksum_address import get_checksum_address
+from web3.auto import w3
 
 # enter slippage as shown => 1 = 0.1%, 5 = 0.5%, 10 = 1%
 SLIPPAGE = 5
@@ -14,16 +14,16 @@ polygon_w3 = Web3(Web3.HTTPProvider(polygon_rpc_url))
 fantom_w3 = Web3(Web3.HTTPProvider(fantom_rpc_url))
 
 # Stargate Router
-stargate_polygon_address = get_checksum_address('0x45A01E4e04F14f7A4a6702c74187c5F6222033cd')
-stargate_fantom_address = get_checksum_address('0xAf5191B0De278C7286d6C7CC6ab6BB8A73bA2Cd6')
+stargate_polygon_address = w3.to_checksum_address('0x45A01E4e04F14f7A4a6702c74187c5F6222033cd')
+stargate_fantom_address = w3.to_checksum_address('0xAf5191B0De278C7286d6C7CC6ab6BB8A73bA2Cd6')
 
 # ABIs
 stargate_abi = json.load(open('./abis/router_abi.json'))
 usdc_abi = json.load(open('./abis/usdc_abi.json'))
 
 # USDC contracts
-usdc_polygon_address = get_checksum_address('0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174')
-usdc_fantom_address = get_checksum_address('0x04068DA6C83AFCFA0e13ba15A6696662335D5B75')
+usdc_polygon_address = w3.to_checksum_address('0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174')
+usdc_fantom_address = w3.to_checksum_address('0x04068DA6C83AFCFA0e13ba15A6696662335D5B75')
 
 # Init contracts
 stargate_polygon_contract = polygon_w3.eth.contract(address=stargate_polygon_address, abi=stargate_abi)
@@ -44,7 +44,7 @@ def get_balance_usdc_fantom(address):
 
 
 def swap_usdc_polygon_to_fantom(account, amount):
-    address = get_checksum_address(account=account)
+    address = w3.to_checksum_address(account.address)
     nonce = polygon_w3.eth.get_transaction_count(address)
     gas_price = polygon_w3.eth.gas_price
     fees = stargate_fantom_contract.functions.quoteLayerZeroFee(112,
@@ -100,7 +100,7 @@ def swap_usdc_polygon_to_fantom(account, amount):
 
 # Fantom -> Polygon USDC
 def swap_usdc_fantom_to_polygon(account, amount):
-    address = get_checksum_address(account=account)
+    address = w3.to_checksum_address(account.address)
     nonce = fantom_w3.eth.get_transaction_count(address)
     gas_price = fantom_w3.eth.gas_price
     fees = stargate_fantom_contract.functions.quoteLayerZeroFee(109,
