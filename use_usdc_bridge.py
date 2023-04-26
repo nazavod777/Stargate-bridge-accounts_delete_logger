@@ -14,7 +14,7 @@ def main(tr):
                     fantom_balance = get_balance_usdc_fantom(account.address)
                     polygon_balance = get_balance_usdc_polygon(account.address)
 
-                    if fantom_balance + polygon_balance < 10 * (10 ** 6):
+                    if fantom_balance + polygon_balance < 1 * (10 ** 6):
                         continue
 
                     if fantom_balance > polygon_balance:

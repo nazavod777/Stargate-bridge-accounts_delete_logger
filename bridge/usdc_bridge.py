@@ -47,7 +47,7 @@ def swap_usdc_polygon_to_fantom(account, amount):
     address = w3.to_checksum_address(account.address)
     nonce = polygon_w3.eth.get_transaction_count(address)
     gas_price = polygon_w3.eth.gas_price
-    fees = stargate_fantom_contract.functions.quoteLayerZeroFee(112,
+    fees = stargate_polygon_contract.functions.quoteLayerZeroFee(112,
                                                                 1,
                                                                 "0x0000000000000000000000000000000000001010",
                                                                 "0x",
@@ -139,7 +139,7 @@ def swap_usdc_fantom_to_polygon(account, amount):
     to = account.address
     data = '0x'
 
-    swap_txn = stargate_polygon_contract.functions.swap(
+    swap_txn = stargate_fantom_contract.functions.swap(
         chainId, source_pool_id, dest_pool_id, refund_address, amountIn, amountOutMin, lzTxObj, to, data
     ).build_transaction({
         'from': address,
